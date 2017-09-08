@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+    <script src="/static/js/settings.js"></script>
+    <h1 class="button">Book Settings</h1>
+    <form onsubmit="return false" id="book-settings">
+        <div class="container">
+            <div class="row">
+                <div id="types-box" class="one-third column">
+                    <h5>Type</h5>
+                    <button id="add-types" class="button" onclick="addNewInputs('types-box','type')">+</button>
+                    <br>
+                    <input type="text" class="type">
+                </div>
+                <div id="genres-box" class="one-third column">
+                    <h5>Genre</h5>
+                    <button id="add-genres" class="button" onclick="addNewInputs('genres-box','genre')">+</button>
+                    <br>
+                    <input type="text" id="genre">
+                </div>
+                <div id="author-box" class="one-third column">
+                    <h5>Authors</h5>
+                    <button id="add-author" class="button" onclick="addNewInputs('author-box','author')">+</button>
+                    <br>
+                    <input type="text" id="author">
+                </div>
+            </div>
+            <div class="row">
+                <div class="eleven columns">
+                    <button id="save-button" type="submit">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

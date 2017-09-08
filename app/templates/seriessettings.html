@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <script src="/static/js/settings.js"></script>
+    <h1 class="button">Series Settings</h1>
+    <form onsubmit="return false">
+        <div id="input-box">
+            <h5>Type</h5>
+            <button id="add-types" class="button" onclick="addNewInputs('types-box','type')">+</button>
+            <div id="types-box">
+                <input type="text" id="type">
+            </div>
+            <h5>Genre</h5>
+            <button id="add-genres" class="button" onclick="addNewInputs('genres-box','genre')">+</button>
+            <div id="genres-box">
+                <input type="text" id="genre">
+            </div>
+        </div>
+        <div>
+            <button class="button" type="submit">Save</button>
+        </div>
+    </form>
+{% endblock %}
