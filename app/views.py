@@ -6,16 +6,7 @@ import json
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'nickname': 'Daniel'}
-    posts = [{
-        'author': {'nickname': 'John'},
-        'body': 'Chilly in Quito'
-    },
-    {
-        'author': {'nickname': 'Gaby'},
-        'body': 'I like thriller movies'
-    }]
-    return render_template('index.html', title='Reboose Home Page', user=user, posts=posts)
+    return render_template('index.html', title='Reboose Home Page')
 
 @app.route('/settings')
 def settings():
