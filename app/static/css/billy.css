@@ -1,0 +1,12 @@
+/*
+File that has some css confs to work correctly
+
+@author: nano-bytes and Signare
+*/
+table td {
+    padding: 0.15em 0.15em;
+}
+
+td.fa-icons a{
+  margin-left: 20%;
+}
