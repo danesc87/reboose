@@ -3,27 +3,22 @@
 <header id="header">
     <a class="logo">Book Settings</a>
 </header>
-    <script src="/static/js/settings.js"></script>
-    <form onsubmit="return false" id="book-settings">
+    <!--<script src="/static/js/settings.js"></script>-->
+    <form id="book-settings" method="POST" action="http://127.0.0.1:8000/booksettings">
         <div class="container">
             <div class="row">
-                <div id="types-box" class="one-third column">
+                <div id="types-box" class="six columns">
                     <h5>Type</h5>
-                    <button id="add-types" class="button" onclick="addNewInputs('types-box','type')">+</button>
-                    <br>
-                    <input type="text" class="type">
+                    <input type="text" class="type" name="type">
                 </div>
-                <div id="genres-box" class="one-third column">
+                <div id="genres-box" class="six columns">
                     <h5>Genre</h5>
-                    <button id="add-genres" class="button" onclick="addNewInputs('genres-box','genre')">+</button>
-                    <br>
+                    <select>
+                        {% for book_types in types %}
+                        <option>{{book_types.type}}</option>
+                        {% endfor %}
+                    </select>
                     <input type="text" id="genre">
-                </div>
-                <div id="author-box" class="one-third column">
-                    <h5>Authors</h5>
-                    <button id="add-author" class="button" onclick="addNewInputs('author-box','author')">+</button>
-                    <br>
-                    <input type="text" id="author">
                 </div>
             </div>
             <div class="row">

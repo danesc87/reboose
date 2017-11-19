@@ -1,7 +1,6 @@
 from flask import render_template, request
 from app import app, db
 from .models import BookType
-import json
 
 @app.route('/')
 @app.route('/index')
@@ -12,21 +11,17 @@ def index():
 def settings():
     return render_template('settings.html', title='Reboose Settings')
 
-@app.route('/booksettings', methods=['GET'])
-def get_booksettings():
-    return render_template('booksettings.html', title='Reboose Book Settings')
-
-@app.route('/booksettings', methods=['POST'])
+@app.route('/booksettings', methods=['GET', 'POST'])
 def post_booksettings():
-    json_books = json.loads(request.data)
-    for type_of_book in json_books:
-        try:
-            book_type = json.loads(type_of_book)['type']
-        except TypeError:
-            book_type = type_of_book['type']
-        new_book_type = BookType(type=book_type)
-        db.session.add(new_book_type)
-        db.session.commit()
+    if request.method == 'GET':
+        return render_template('booksettings.html', title='Reboose Book Settings', types = BookType.query.all())
+    if request.method == 'POST':
+        type_of_book = request.form['type']
+        if type_of_book != '' or type_of_book != None:
+            new_book_type = BookType(type=type_of_book)
+            db.session.add(new_book_type)
+            db.session.commit()
+        return render_template('booksettings.html', title='Reboose Book Settings')
 
 @app.route('/seriessettings', methods=['GET', 'POST'])
 def seriessettings():
