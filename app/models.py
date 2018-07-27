@@ -5,6 +5,9 @@ class BookType(db.Model):
     type = db.Column(db.String(100), index=True, unique=True)
     genders = db.relationship('BookGenre', backref='types', lazy='dynamic')
 
+    def json_dump(self):
+        return dict(id=self.id, type=self.type)
+
     def __repr__(self):
         return '<BookType %r>' % (self.type)
 
