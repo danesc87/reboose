@@ -21,6 +21,10 @@ To deploy REBOOSE it's necessary to create DB and it's tables before running the
  do that:
 
 #### Migrations
+Migrations for **Books** microservice  
+```bash
+cd books/
+```
 ```bash
 flask db init
 ```

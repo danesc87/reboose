@@ -33,7 +33,10 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), index=True)
     lastname = db.Column(db.String(150), index=True)
-    books = db.relationship('Books', backref='author', lazy='dynamic')
+    books_author_name = db.relationship('Books', backref='author_name', lazy='dynamic',
+                                        foreign_keys='Books.book_author_name')
+    books_author_lastname = db.relationship('Books', backref='author_lastname', lazy='dynamic',
+                                            foreign_keys='Books.book_author_lastname')
 
     def json_dump(self):
         return dict(id=self.id, name=self.name, lastname=self.lastname)

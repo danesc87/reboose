@@ -105,6 +105,7 @@ ENV/
 
 # SQLITE
 *.sqlite
+*.db
 
 # Flask stuff
 migrations/
