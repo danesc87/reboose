@@ -44,9 +44,10 @@ class Author(db.Model):
 class Books(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_name = db.Column(db.String(300))
-    # book_type = db.Column(db.String(100), db.ForeignKey('book_type.type'))
-    book_genre = db.Column(db.Integer, db.ForeignKey('book_genre.id'))
-    book_author = db.Column(db.String(150), db.ForeignKey('author.name'))
+    book_type = db.Column(db.String(100), db.ForeignKey('book_type.type'))
+    book_genre = db.Column(db.String(100), db.ForeignKey('book_genre.genre'))
+    book_author_name = db.Column(db.String(150), db.ForeignKey('author.name'))
+    book_author_lastname = db.Column(db.String(150), db.ForeignKey('author.lastname'))
     status = db.Column(db.Integer)
     statusperson = db.Column(db.String(150))
 

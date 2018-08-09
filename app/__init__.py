@@ -18,3 +18,4 @@ migrate = Migrate(app, db)
 from app import models, error_handler
 from app.views import book_settings_views
 from app.views import author_views
+from app.views import book_views
