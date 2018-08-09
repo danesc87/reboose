@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+# Custom messages for some actions
+'''
+ Author: Daniel Córdova A.
+'''
+
 from flask import jsonify
 
 def succesfully_stored_on_db(object_name):

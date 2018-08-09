@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+# Custom handle errors for API
+'''
+ Author: Daniel Córdova A.
+'''
+
 from flask import make_response
 from flask import jsonify
 from app import app

@@ -1,9 +1,15 @@
+#!/usr/bin/python3
+# Models for REBOOSE
+'''
+ Author: Daniel Córdova A.
+'''
+
 from app import db
 
 class BookType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(100), index=True, unique=True)
-    genders = db.relationship('BookGenre', backref='types', lazy='dynamic')
+    genres = db.relationship('BookGenre', backref='types', lazy='dynamic')
 
     def json_dump(self):
         return dict(id=self.id, type=self.type)
@@ -13,17 +19,24 @@ class BookType(db.Model):
 
 class BookGenre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    genre = db.Column(db.String(100), index=True, unique=True)
-    type = db.Column(db.Integer, db.ForeignKey('book_type.id'))
+    genre = db.Column(db.String(100), index=True)
+    type = db.Column(db.String(100), db.ForeignKey('book_type.type'))
     books = db.relationship('Books', backref='gender', lazy='dynamic')
+
+    def json_dump(self):
+        return dict(id=self.id, genre=self.genre, type=self.type)
 
     def __repr__(self):
         return '<BookGenre %r>' % (self.genre)
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(150), index=True, unique=True)
+    name = db.Column(db.String(150), index=True)
+    lastname = db.Column(db.String(150), index=True)
     books = db.relationship('Books', backref='author', lazy='dynamic')
+
+    def json_dump(self):
+        return dict(id=self.id, name=self.name, lastname=self.lastname)
 
     def __repr__(self):
         return '<Author %r>' % (self.name)
