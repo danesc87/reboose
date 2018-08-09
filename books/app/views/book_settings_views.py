@@ -12,12 +12,18 @@ from app import app, db, custom_messages
 from app.models import BookType, BookGenre
 from . import book_path, book_type_path, book_genre_path
 
+
+# Book Types
+
 @app.route(book_path + book_type_path, methods=['POST'])
 def post_new_book_type():
     if not request.json:
         abort(400)
     try:
         book_type = request.json.get('type')
+        if book_type == "" or book_type == None:
+            abort(400)
+
         new_book_type = BookType(type=book_type)
         db.session.add(new_book_type)
         db.session.commit()
@@ -47,26 +53,35 @@ def delete_book_type_by_name(book_type):
     deleted_book_type = BookType.query.filter_by(type=book_type).order_by(BookType.id.desc()).first()
     if deleted_book_type == None:
         abort(404)
+
     db.session.delete(deleted_book_type)
     db.session.commit()
 
     return custom_messages.succesfully_deleted_from_db(book_type + " type")
+
+
+# Book Genre
 
 @app.route(book_path + book_genre_path, methods=['POST'])
 def post_new_genre():
     if not request.json:
         abort(400)
 
-    try:
-        request_body = request.json
-        new_book_genre = BookGenre(genre=request_body.get('genre'), type=request_body.get('type'))
-        db.session.add(new_book_genre)
-        db.session.commit()
-    except exc.IntegrityError:
+    book_type = request.json.get('type')
+    book_genre = request.json.get('genre')
+    if book_type == "" or book_type == None or book_genre == "" or book_genre == None:
         abort(400)
 
+    existing_book_genre = BookGenre.query.filter_by(genre=book_genre, type=book_type).first()
+    if existing_book_genre != None:
+        abort(400)
+    
+    new_book_genre = BookGenre(genre=book_genre, type=book_type)
+    db.session.add(new_book_genre)
+    db.session.commit()
+
     return custom_messages.\
-               succesfully_stored_on_db(request.json.get('genre') + " " + request.json.get('type') + " genre"), 201
+               succesfully_stored_on_db(book_genre + " " + book_type + " genre"), 201
 
 @app.route(book_path + book_genre_path, methods=['GET'])
 def get_book_genres():
@@ -85,9 +100,11 @@ def get_book_genres_by_type_name(book_type_name):
 def get_book_genre_by_type_and_genre(book_type_name, book_genre_name):
     if (book_type_name == '' or book_type_name == None) and (book_genre_name == '' or book_genre_name == None):
         abort(400)
+
     book_genre = BookGenre.query.filter_by(genre=book_genre_name, type=book_type_name).first()
     if book_genre == None:
         abort(404)
+
     return jsonify(book_genre.json_dump())
 
 @app.route(book_path + book_genre_path, methods=['DELETE'])
@@ -99,6 +116,7 @@ def delete_book_genre_by_name():
         'type')).order_by(BookGenre.id.desc()).first()
     if deleted_book_genre == None:
         abort(404)
+
     db.session.delete(deleted_book_genre)
     db.session.commit()
 

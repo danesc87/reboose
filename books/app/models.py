@@ -8,7 +8,7 @@ from app import db
 
 class BookType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(100), index=True, unique=True)
+    type = db.Column(db.String(100), index=True, unique=True, nullable=False)
     genres = db.relationship('BookGenre', backref='types', lazy='dynamic')
 
     def json_dump(self):
@@ -19,8 +19,8 @@ class BookType(db.Model):
 
 class BookGenre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    genre = db.Column(db.String(100), index=True)
-    type = db.Column(db.String(100), db.ForeignKey('book_type.type'))
+    genre = db.Column(db.String(100), index=True, nullable=False)
+    type = db.Column(db.String(100), db.ForeignKey('book_type.type'), nullable=False)
     books = db.relationship('Books', backref='gender', lazy='dynamic')
 
     def json_dump(self):
@@ -31,8 +31,8 @@ class BookGenre(db.Model):
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(150), index=True)
-    lastname = db.Column(db.String(150), index=True)
+    name = db.Column(db.String(150), index=True, nullable=False)
+    lastname = db.Column(db.String(150), index=True, nullable=False)
     books_author_name = db.relationship('Books', backref='author_name', lazy='dynamic',
                                         foreign_keys='Books.book_author_name')
     books_author_lastname = db.relationship('Books', backref='author_lastname', lazy='dynamic',
@@ -46,11 +46,11 @@ class Author(db.Model):
 
 class Books(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    book_name = db.Column(db.String(300))
-    book_type = db.Column(db.String(100), db.ForeignKey('book_type.type'))
-    book_genre = db.Column(db.String(100), db.ForeignKey('book_genre.genre'))
-    book_author_name = db.Column(db.String(150), db.ForeignKey('author.name'))
-    book_author_lastname = db.Column(db.String(150), db.ForeignKey('author.lastname'))
+    book_name = db.Column(db.String(300), nullable=False)
+    book_type = db.Column(db.String(100), db.ForeignKey('book_type.type'), nullable=False)
+    book_genre = db.Column(db.String(100), db.ForeignKey('book_genre.genre'), nullable=False)
+    book_author_name = db.Column(db.String(150), db.ForeignKey('author.name'), nullable=False)
+    book_author_lastname = db.Column(db.String(150), db.ForeignKey('author.lastname'), nullable=False)
     status = db.Column(db.Integer)
     statusperson = db.Column(db.String(150))
 

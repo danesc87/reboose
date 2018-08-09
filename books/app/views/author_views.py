@@ -19,9 +19,13 @@ def post_author():
 
     author_name = request.json.get('name')
     author_lastname = request.json.get('lastname')
+    if author_name == "" or author_name == None or author_lastname == "" or author_lastname == None:
+        abort(400)
+
     existing_author = Author.query.filter_by(name=author_name, lastname=author_lastname).first()
     if existing_author != None:
         abort(400)
+
     new_author = Author(name=author_name, lastname=author_lastname)
     db.session.add(new_author)
     db.session.commit()
