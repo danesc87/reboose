@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Models for REBOOSE
+# Models for Books Microservice
 '''
  Author: Daniel Córdova A.
 '''

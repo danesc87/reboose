@@ -15,3 +15,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app import models, error_handler
+from app.views import serie_settings_views
