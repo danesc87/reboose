@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# App Init
+# Books Microservice App Init
 '''
 Author: Daniel Córdova A.
 '''

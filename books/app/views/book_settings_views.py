@@ -45,7 +45,7 @@ def get_book_types():
 
 
 @app.route(book_path + book_type_path + '/<string:book_type_name>', methods=['GET'])
-def get_boot_type_by_name(book_type_name):
+def get_book_type_by_name(book_type_name):
     check_empty_values(book_type_name)
     book_type = BookType.query.filter_by(
         type=book_type_name
