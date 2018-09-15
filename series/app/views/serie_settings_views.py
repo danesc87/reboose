@@ -35,3 +35,8 @@ def post_new_serie_type():
     return succesfully_stored_on_db(
         serie_type + 'type'
     ), 201
+
+@app.route(serie_path + serie_type_path, methods=['GET'])
+def get_series_types():
+    all_serie_types = SerieType.query.all()
+    return jsonify([serie_type.json_dump() for serie_type in all_serie_types])
