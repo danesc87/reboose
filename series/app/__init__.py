@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Books MicroService App Init
+# Series MicroService App Init
 """
  Author: Daniel Córdova A.
 """
@@ -16,6 +16,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app import models, error_handler
-from app.views import author_views
-from app.views import book_settings_views
-from app.views import book_views
+from app.views import series_settings_views, series_views

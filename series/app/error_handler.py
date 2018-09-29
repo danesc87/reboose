@@ -4,7 +4,6 @@
  Author: Daniel Córdova A.
 """
 
-
 from flask import jsonify
 from flask import make_response
 

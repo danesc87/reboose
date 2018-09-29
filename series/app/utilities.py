@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Some utilities for books
+# Some utilities for series
 """
  Author: Daniel Córdova A.
 """
