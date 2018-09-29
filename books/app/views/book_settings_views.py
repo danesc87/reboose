@@ -15,9 +15,9 @@ from app.utilities import is_not_json_request, check_empty_values
 from . import book_path, book_type_path, book_genre_path
 
 
-#############
-# Book Types#
-#############
+##############
+# Book Types #
+##############
 
 @app.route(book_path + book_type_path, methods=['POST'])
 def post_new_book_type():
@@ -39,7 +39,7 @@ def post_new_book_type():
 
 
 @app.route(book_path + book_type_path, methods=['GET'])
-def get_book_types():
+def get_book_type():
     all_book_types = BookType.query.all()
     return jsonify([book_type.json_dump() for book_type in all_book_types])
 
@@ -74,9 +74,9 @@ def delete_book_type_by_name():
         book_type + " type"
     )
 
-#############
-# Book Genre#
-#############
+##############
+# Book Genre #
+##############
 
 @app.route(book_path + book_genre_path, methods=['POST'])
 def post_new_genre():
@@ -99,7 +99,7 @@ def post_new_genre():
 
 
 @app.route(book_path + book_genre_path, methods=['GET'])
-def get_book_genres():
+def get_book_genre():
 
     all_book_genres = BookGenre.query.all()
     return jsonify(
@@ -108,7 +108,7 @@ def get_book_genres():
 
 
 @app.route(book_path + book_genre_path + '/<string:book_type_name>', methods=['GET'])
-def get_book_genres_by_type_name(book_type_name):
+def get_book_genre_by_type_name(book_type_name):
 
     check_empty_values(book_type_name)
     all_book_genres_by_type = BookGenre.query.filter_by(
@@ -152,4 +152,3 @@ def delete_book_genre_by_name():
     return custom_messages.succesfully_deleted_from_db(
         request.json.get('genre') + " " + request.json.get('type') + " genre"
     )
-
