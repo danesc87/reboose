@@ -24,36 +24,36 @@ from . import series_path, series_type_path, series_genre_path
 def post_type():
     is_not_json_request(request)
     try:
-        series_type = request.json.get('type')
-        check_empty_values(series_type)
+        type_name = request.json.get('type_name')
+        check_empty_values(type_name)
 
-        new_series_type = SeriesType(type=series_type)
-        db.session.add(new_series_type)
+        new_type_name = SeriesType(type_name=type_name)
+        db.session.add(new_type_name)
         db.session.commit()
     except exc.IntegrityError:
         abort(400)
 
     return custom_messages.successfully_stored_on_db(
-        series_type + ' type'
+        type_name + ' type'
     ), 201
 
 
 @app.route(series_path + series_type_path, methods=['GET'])
 def get_all_types():
-    all_series_types = SeriesType.query.all()
-    return jsonify([serie_type.json_dump() for serie_type in all_series_types])
+    all_type_names = SeriesType.query.all()
+    return jsonify([type_name.json_dump() for type_name in all_type_names])
 
 
-@app.route(series_path + series_type_path + '/<string:series_type_name>', methods=['GET'])
-def get_type_by_name(series_type_name):
+@app.route(series_path + series_type_path + '/<string:type_name>', methods=['GET'])
+def get_type_by_name(type_name):
 
-    check_empty_values(series_type_name)
-    series_type = SeriesType.query.filter_by(
-        type=series_type_name
+    check_empty_values(type_name)
+    series_type_name = SeriesType.query.filter_by(
+        type_name=type_name
     ).first()
-    exist_data_on_database(series_type)
+    exist_data_on_database(series_type_name)
     return jsonify(
-        series_type.json_dump()
+        series_type_name.json_dump()
     )
 
 
@@ -61,10 +61,10 @@ def get_type_by_name(series_type_name):
 def delete_type_by_name():
 
     is_not_json_request(request)
-    series_type = request.json.get('type')
-    check_empty_values(series_type)
+    type_name = request.json.get('type_name')
+    check_empty_values(type_name)
     deleted_series_type = SeriesType.query.filter_by(
-        type=series_type
+        type_name=type_name
     ).order_by(
         SeriesType.id.desc()
     ).first()
@@ -72,7 +72,7 @@ def delete_type_by_name():
     db.session.delete(deleted_series_type)
     db.session.commit()
     return custom_messages.successfully_deleted_from_db(
-        series_type + " type"
+        type_name + " type"
     )
 
 #################
@@ -85,51 +85,51 @@ def post_new_genre():
 
     is_not_json_request(request)
     [check_empty_values(request.json.get(field) for field in request.json)]
-    series_type = request.json.get('type')
-    series_genre = request.json.get('genre')
+    type_name = request.json.get('type_name')
+    genre_name = request.json.get('genre')
     existing_series_genre = SeriesGenre.query.filter_by(
-        genre=series_genre,
-        type=series_type
+        genre=genre_name,
+        type_name=type_name
     ).first()
     duplicate_data_in_database(existing_series_genre)
-    new_series_genre = SeriesGenre(genre=series_genre, type=series_type)
+    new_series_genre = SeriesGenre(genre=genre_name, type_name=type_name)
     db.session.add(new_series_genre)
     db.session.commit()
     return custom_messages.successfully_stored_on_db(
-        series_genre + " " + series_type + " genre"
+        genre_name + " " + type_name + " genre"
     ), 201
 
 
 @app.route(series_path + series_genre_path, methods=['GET'])
 def get_all_genres():
 
-    all_series_genres = SeriesGenre.query.all()
+    all_genre_names = SeriesGenre.query.all()
     return jsonify(
-        [series_genre.json_dump() for series_genre in all_series_genres]
+        [genre_name.json_dump() for genre_name in all_genre_names]
     )
 
 
-@app.route(series_path + series_genre_path + '/<string:series_type_name>', methods=['GET'])
-def get_genre_by_type_and_name(series_type_name):
+@app.route(series_path + series_genre_path + '/<string:type_name>', methods=['GET'])
+def get_genre_by_type_and_name(type_name):
 
-    check_empty_values(series_type_name)
-    all_series_genres_by_type = SeriesGenre.query.filter_by(
-        type=series_type_name
+    check_empty_values(type_name)
+    all_genre_names_by_type = SeriesGenre.query.filter_by(
+        type_name=type_name
     ).all()
-    exist_data_on_database(all_series_genres_by_type)
+    exist_data_on_database(all_genre_names_by_type)
     return jsonify(
-        [series_genre.json_dump() for series_genre in all_series_genres_by_type]
+        [genre_name.json_dump() for genre_name in all_genre_names_by_type]
     )
 
 
-@app.route(series_path + series_genre_path + '/<string:series_type_name>/<string:series_genre_name>', methods=['GET'])
-def get_series_genre_by_type_and_genre(series_type_name, series_genre_name):
+@app.route(series_path + series_genre_path + '/<string:type_name>/<string:genre_name>', methods=['GET'])
+def get_series_genre_by_type_and_genre(type_name, genre_name):
 
-    check_empty_values(series_type_name)
-    check_empty_values(series_genre_name)
+    check_empty_values(type_name)
+    check_empty_values(genre_name)
     series_genre = SeriesGenre.query.filter_by(
-        genre=series_genre_name,
-        type=series_type_name
+        genre=genre_name,
+        type_name=type_name
     ).first()
     exist_data_on_database(series_genre)
     return jsonify(
@@ -142,15 +142,15 @@ def delete_genre_by_name():
 
     is_not_json_request(request)
     [check_empty_values(request.json.get(field) for field in request.json)]
-    deleted_series_genre = SeriesGenre.query.filter_by(
+    deleted_series_name = SeriesGenre.query.filter_by(
         genre=request.json.get('genre'),
-        type=request.json.get('type')
+        type_name=request.json.get('type_name')
     ).order_by(
         SeriesGenre.id.desc()
     ).first()
-    exist_data_on_database(deleted_series_genre)
-    db.session.delete(deleted_series_genre)
+    exist_data_on_database(deleted_series_name)
+    db.session.delete(deleted_series_name)
     db.session.commit()
     return custom_messages.successfully_deleted_from_db(
-        request.json.get('genre') + " " + request.json.get('type') + " genre"
+        request.json.get('genre') + " " + request.json.get('type_name') + " genre"
     )
