@@ -25,35 +25,35 @@ def post_type():
 
     is_not_json_request(request)
     try:
-        book_type = request.json.get('type')
-        check_empty_values(book_type)
+        type_name = request.json.get('type_name')
+        check_empty_values(type_name)
 
-        new_book_type = BookType(type=book_type)
-        db.session.add(new_book_type)
+        new_type_name = BookType(type_name=type_name)
+        db.session.add(new_type_name)
         db.session.commit()
     except exc.IntegrityError:
         abort(400)
 
     return custom_messages.successfully_stored_on_db(
-        book_type + " type"
+        type_name + " type"
     ), 201
 
 
 @app.route(book_path + book_type_path, methods=['GET'])
 def get_all_types():
-    all_book_types = BookType.query.all()
-    return jsonify([book_type.json_dump() for book_type in all_book_types])
+    all_types_names = BookType.query.all()
+    return jsonify([type_name.json_dump() for type_name in all_types_names])
 
 
-@app.route(book_path + book_type_path + '/<string:book_type_name>', methods=['GET'])
-def get_type_by_name(book_type_name):
-    check_empty_values(book_type_name)
-    book_type = BookType.query.filter_by(
-        type=book_type_name
+@app.route(book_path + book_type_path + '/<string:type_name>', methods=['GET'])
+def get_type_by_name(type_name):
+    check_empty_values(type_name)
+    book_type_name = BookType.query.filter_by(
+        type_name=type_name
     ).first()
-    exist_data_on_database(book_type)
+    exist_data_on_database(book_type_name)
     return jsonify(
-        book_type.json_dump()
+        book_type_name.json_dump()
     )
 
 
@@ -61,18 +61,18 @@ def get_type_by_name(book_type_name):
 def delete_type_by_name():
 
     is_not_json_request(request)
-    book_type = request.json.get('type')
-    check_empty_values(book_type)
-    deleted_book_type = BookType.query.filter_by(
-        type=book_type
+    type_name = request.json.get('type_name')
+    check_empty_values(type_name)
+    deleted_type_name = BookType.query.filter_by(
+        type_name=type_name
     ).order_by(
         BookType.id.desc()
     ).first()
-    exist_data_on_database(deleted_book_type)
-    db.session.delete(deleted_book_type)
+    exist_data_on_database(deleted_type_name)
+    db.session.delete(deleted_type_name)
     db.session.commit()
     return custom_messages.successfully_deleted_from_db(
-        book_type + " type"
+        type_name + " type_name"
     )
 
 ##############
@@ -85,55 +85,55 @@ def post_genre():
 
     is_not_json_request(request)
     [check_empty_values(request.json.get(field) for field in request.json)]
-    book_type = request.json.get('type')
+    type_name = request.json.get('type_name')
     book_genre = request.json.get('genre')
     existing_book_genre = BookGenre.query.filter_by(
         genre=book_genre,
-        type=book_type
+        type_name=type_name
     ).first()
     duplicate_data_in_database(existing_book_genre)
-    new_book_genre = BookGenre(genre=book_genre, type=book_type)
-    db.session.add(new_book_genre)
+    new_genre_name = BookGenre(genre=book_genre, type_name=type_name)
+    db.session.add(new_genre_name)
     db.session.commit()
     return custom_messages.successfully_stored_on_db(
-        book_genre + " " + book_type + " genre"
+        book_genre + " " + type_name + " genre"
     ), 201
 
 
 @app.route(book_path + book_genre_path, methods=['GET'])
 def get_all_genres():
 
-    all_book_genres = BookGenre.query.all()
+    all_genre_names = BookGenre.query.all()
     return jsonify(
-        [book_genre.json_dump() for book_genre in all_book_genres]
+        [genre_name.json_dump() for genre_name in all_genre_names]
     )
 
 
-@app.route(book_path + book_genre_path + '/<string:book_type_name>', methods=['GET'])
-def get_genre_by_type(book_type_name):
+@app.route(book_path + book_genre_path + '/<string:type_name>', methods=['GET'])
+def get_genre_by_type(type_name):
 
-    check_empty_values(book_type_name)
-    all_book_genres_by_type = BookGenre.query.filter_by(
-        type=book_type_name
+    check_empty_values(type_name)
+    all_genre_names_by_type = BookGenre.query.filter_by(
+        type_name=type_name
     ).all()
-    exist_data_on_database(all_book_genres_by_type)
+    exist_data_on_database(all_genre_names_by_type)
     return jsonify(
-        [book_genre.json_dump() for book_genre in all_book_genres_by_type]
+        [genre_name.json_dump() for genre_name in all_genre_names_by_type]
     )
 
 
-@app.route(book_path + book_genre_path + '/<string:book_type_name>/<string:book_genre_name>', methods=['GET'])
-def get_book_genre_by_type_and_genre(book_type_name, book_genre_name):
+@app.route(book_path + book_genre_path + '/<string:type_name>/<string:genre_name>', methods=['GET'])
+def get_book_genre_by_type_and_genre(type_name, genre_name):
 
-    check_empty_values(book_type_name)
-    check_empty_values(book_genre_name)
-    book_genre = BookGenre.query.filter_by(
-        genre=book_genre_name,
-        type=book_type_name
+    check_empty_values(type_name)
+    check_empty_values(genre_name)
+    genre_name = BookGenre.query.filter_by(
+        genre=genre_name,
+        type_name=type_name
     ).first()
-    exist_data_on_database(book_genre)
+    exist_data_on_database(genre_name)
     return jsonify(
-        book_genre.json_dump()
+        genre_name.json_dump()
     )
 
 
@@ -142,15 +142,15 @@ def delete_genre_by_name():
 
     is_not_json_request(request)
     [check_empty_values(request.json.get(field) for field in request.json)]
-    deleted_book_genre = BookGenre.query.filter_by(
+    deleted_genre_name = BookGenre.query.filter_by(
         genre=request.json.get('genre'),
-        type=request.json.get('type')
+        type_name=request.json.get('type_name')
     ).order_by(
         BookGenre.id.desc()
     ).first()
-    exist_data_on_database(deleted_book_genre)
-    db.session.delete(deleted_book_genre)
+    exist_data_on_database(deleted_genre_name)
+    db.session.delete(deleted_genre_name)
     db.session.commit()
     return custom_messages.successfully_deleted_from_db(
-        request.json.get('genre') + " " + request.json.get('type') + " genre"
+        request.json.get('genre') + " " + request.json.get('type_name') + " genre"
     )
