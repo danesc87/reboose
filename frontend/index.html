@@ -3,41 +3,31 @@
   <head>
     <meta charset="utf-8">
     <title>Reboose</title>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="css/fontawesome-all.min.css">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/skeleton.css">
   </head>
   <body>
-    <h1>Series Settings</h1>
-    <div class="container" id="series-types">
-      <h3>Series Types</h3>
-      <div class="row" v-for="type in types">
-        <div class="twelve columns">
-          <p><b>Id:</b> {{ type.id }}, <b>Type Name:</b> {{ type.type_name }}</p>
+    <div class="container">
+      <h1>Reboose</h1>
+      <div class="row">
+        <h3>Books</h3>
+        <div class="two columns">
+          <a class="button button-primary" href="books/books.html">Books</a>
+        </div>
+        <div class="two columns">
+          <a class="button button-primary" href="books/books_settings.html">Settings</a>
         </div>
       </div>
-      <hr>
-      <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesTypes">Get Series Types</button>
+      <div class="row">
+        <h3>Series</h3>
+        <div class="two columns">
+          <a class="button button-primary" href="series/series.html">Series</a>
+        </div>
+        <div class="two columns">
+          <a class="button button-primary"  href="series/series_settings.html">Settings</a>
+        </div>
+      </div>
     </div>
   </body>
-  <script type="text/javascript">
-    var serieTypes = new Vue({
-      el: '#series-types',
-      data: {
-        types: [
-          {"id": 10,"type_name": "dorama"},
-          {"id": 9,"type_name": "series"}
-        ]
-      },
-      methods: {
-        getSeriesTypes: function() {
-          axios.get("http://127.0.0.1:2051/series/type")
-            .then(response => {this.types = response.data})
-            .catch(error => console.log(error))
-        }
-      }
-    });  
-  </script>
 </html>
