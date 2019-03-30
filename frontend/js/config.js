@@ -30,5 +30,6 @@ const paths = {
 // Series Id's
 var seriesIds = {
     seriesTypeId: '#series-settings',
-    newSerieTypeId: 'new-type'
+    newSerieTypeId: 'new-type',
+    newSerieGenreId: 'new-genre'
 };

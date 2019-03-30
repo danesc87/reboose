@@ -38,13 +38,24 @@ var serieTypes = new Vue({
       var inputJson = {
         type_name: newType.value
       }
-
       axios.post(seriesTypePath, inputJson)
     },
     getSeriesGenres: function() {
       axios.get(seriesGenrePath)
         .then(response => {this.genres = response.data})
         .catch(error => console.log(error))
+    },
+    postSeriesGenres: function(e){
+      var newType = document.getElementById(seriesIds.newSerieTypeId);
+      var newGenre = document.getElementById(seriesIds.newSerieGenreId);
+      var inputJson = {
+        type_name: newType.value,
+        genre: newGenre.value
+      }
+      axios.post(seriesTypePath, inputJson)
     }
   }
 });
+
+serieTypes.getSeriesTypes();
+serieTypes.getSeriesGenres();

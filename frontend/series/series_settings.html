@@ -14,24 +14,45 @@
     <div class="container" id="series-settings">
       <div class="types">
         <h3>Series Types</h3>
-        <div class="row" v-for="type in types">
-          <div class="twelve columns">
-            <p><b>Type Name:</b> {{ type.type_name }}</p>
+        <div class="container">
+          <div class="six columns">
+            <h6>Insert New Type</h6>
+            <input id="new-type">
+            <hr>
+            <button class="button-primary" style="display:block;margin:auto;" @click="postSeriesTypes">Insert Type</button>
+          </div>
+          <div class="six columns">
+            <div class="container">
+              <div class="row" v-for="type in types">
+                <div class="twelve columns">
+                  <p><b>Type Name:</b> {{ type.type_name }}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <hr>
-        <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesTypes">Get Series Types</button>
       </div>
       <div class="genres">
           <h3>Series Genres</h3>
-          <div class="row" v-for="genre in genres">
-            <div class="twelve columns">
-              <p><b>Genre Name:</b> {{ genre.genre }}</p>
+          <div class="container">
+            <div class="six columns">
+              <h6>Insert New Genre</h6>
+              <input id="new-type">
+              <input id="new-genre">
+              <hr>
+              <button class="button-primary" style="display:block;margin:auto;" @click="postSeriesGenres">Insert Type</button>
+            </div>
+            <div class="six columns">
+              <div class="container">
+                <div class="row" v-for="genre in genres">
+                  <div class="twelve columns">
+                    <p><b>Genre Name:</b> {{ genre.genre }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <hr>
-          <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesGenres">Get Series Types</button>
-        </div>
+      </div>
     </div>
   </body>
   <!-- Custom VueJS Scripts -->
