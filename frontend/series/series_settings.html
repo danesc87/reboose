@@ -12,14 +12,26 @@
   <body>
     <h1>Series Settings</h1>
     <div class="container" id="series-settings">
-      <h3>Series Types</h3>
-      <div class="row" v-for="type in types">
-        <div class="twelve columns">
-          <p><b>Id:</b> {{ type.id }}, <b>Type Name:</b> {{ type.type_name }}</p>
+      <div class="types">
+        <h3>Series Types</h3>
+        <div class="row" v-for="type in types">
+          <div class="twelve columns">
+            <p><b>Type Name:</b> {{ type.type_name }}</p>
+          </div>
         </div>
+        <hr>
+        <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesTypes">Get Series Types</button>
       </div>
-      <hr>
-      <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesTypes">Get Series Types</button>
+      <div class="genres">
+          <h3>Series Genres</h3>
+          <div class="row" v-for="genre in genres">
+            <div class="twelve columns">
+              <p><b>Genre Name:</b> {{ genre.genre }}</p>
+            </div>
+          </div>
+          <hr>
+          <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesGenres">Get Series Types</button>
+        </div>
     </div>
   </body>
   <!-- Custom VueJS Scripts -->
