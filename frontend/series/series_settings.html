@@ -11,7 +11,7 @@
   </head>
   <body>
     <h1>Series Settings</h1>
-    <div class="container" id="series-types">
+    <div class="container" id="series-settings">
       <h3>Series Types</h3>
       <div class="row" v-for="type in types">
         <div class="twelve columns">
@@ -22,22 +22,7 @@
       <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesTypes">Get Series Types</button>
     </div>
   </body>
-  <script type="text/javascript">
-    var serieTypes = new Vue({
-      el: '#series-types',
-      data: {
-        types: [
-          {"id": 10,"type_name": "dorama"},
-          {"id": 9,"type_name": "series"}
-        ]
-      },
-      methods: {
-        getSeriesTypes: function() {
-          axios.get("http://127.0.0.1:2051/series/type")
-            .then(response => {this.types = response.data})
-            .catch(error => console.log(error))
-        }
-      }
-    });
-  </script>
+  <!-- Custom VueJS Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/series-settings.js"></script>
 </html>
