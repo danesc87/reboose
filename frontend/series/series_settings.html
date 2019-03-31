@@ -37,10 +37,12 @@
           <div class="container">
             <div class="six columns">
               <h6>Insert New Genre</h6>
-              <input id="new-type">
+              <select id="selected-type">
+                <option v-for="type in types" :value="type.type_name">{{ type.type_name }}</option>
+              </select>
               <input id="new-genre">
               <hr>
-              <button class="button-primary" style="display:block;margin:auto;" @click="postSeriesGenres">Insert Type</button>
+              <button class="button-primary" style="display:block;margin:auto;" @click="postSeriesGenres">Insert Genre</button>
             </div>
             <div class="six columns">
               <div class="container">
