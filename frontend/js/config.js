@@ -28,8 +28,8 @@ const paths = {
 };
 
 // Series Id's
-var seriesIds = {
-    seriesTypeId: '#series-settings',
+var seriesSettingsIds = {
+    settingsId: '#series-settings',
     newSerieTypeId: 'new-type',
     selectedSerieTypeId: 'selected-type',
     newSerieGenreId: 'new-genre'

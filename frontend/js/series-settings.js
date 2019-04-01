@@ -22,7 +22,7 @@ const seriesGenrePath = seriesFullPath
   .concat(paths.genrePath);
 
 var serieTypes = new Vue({
-  el: seriesIds.seriesTypeId,
+  el: seriesSettingsIds.settingsId,
   data: {
     types: [],
     genres: []
@@ -34,7 +34,7 @@ var serieTypes = new Vue({
         .catch(error => console.log(error))
     },
     postSeriesTypes: function(e){
-      var newType = document.getElementById(seriesIds.newSerieTypeId);
+      var newType = document.getElementById(seriesSettingsIds.newSerieTypeId);
       var inputJson = {
         type_name: newType.value
       }
@@ -46,8 +46,8 @@ var serieTypes = new Vue({
         .catch(error => console.log(error))
     },
     postSeriesGenres: function(e){
-      var newType = document.getElementById(seriesIds.selectedSerieTypeId);
-      var newGenre = document.getElementById(seriesIds.newSerieGenreId);
+      var newType = document.getElementById(seriesSettingsIds.selectedSerieTypeId);
+      var newGenre = document.getElementById(seriesSettingsIds.newSerieGenreId);
       var inputJson = {
         type_name: newType.value,
         genre: newGenre.value

@@ -18,8 +18,7 @@
           <div class="six columns">
             <h6>Insert New Type</h6>
             <input id="new-type">
-            <hr>
-            <button class="button-primary" style="display:block;margin:auto;" @click="postSeriesTypes">Insert Type</button>
+            <button class="button-primary" style="display:block;" @click="postSeriesTypes">Insert Type</button>
           </div>
           <div class="six columns">
             <div class="container">
@@ -32,6 +31,7 @@
           </div>
         </div>
       </div>
+      <hr>
       <div class="genres">
           <h3>Series Genres</h3>
           <div class="container">
@@ -41,14 +41,13 @@
                 <option v-for="type in types" :value="type.type_name">{{ type.type_name }}</option>
               </select>
               <input id="new-genre">
-              <hr>
-              <button class="button-primary" style="display:block;margin:auto;" @click="postSeriesGenres">Insert Genre</button>
+              <button class="button-primary" style="display:block;" @click="postSeriesGenres">Insert Genre</button>
             </div>
             <div class="six columns">
               <div class="container">
                 <div class="row" v-for="genre in genres">
                   <div class="twelve columns">
-                    <p><b>Genre Name:</b> {{ genre.genre }}</p>
+                    <p><b>Type:</b> {{ genre.type_name }} <b>Genre:</b> {{ genre.genre }}</p>
                   </div>
                 </div>
               </div>
