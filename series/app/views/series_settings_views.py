@@ -14,6 +14,7 @@ from app.models import SeriesType, SeriesGenre
 from app.utilities import exist_data_on_database, duplicate_data_in_database
 from app.utilities import is_not_json_request, check_empty_values
 from . import series_path, series_type_path, series_genre_path
+from sqlalchemy.exc import IntegrityError
 
 
 ################
@@ -70,7 +71,10 @@ def delete_type_by_name():
     ).first()
     exist_data_on_database(deleted_series_type)
     db.session.delete(deleted_series_type)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        abort(400)
     return custom_messages.successfully_deleted_from_db(
         type_name + " type"
     )
@@ -85,36 +89,38 @@ def post_new_genre():
 
     is_not_json_request(request)
     [check_empty_values(request.json.get(field) for field in request.json)]
-    type_name = request.json.get('type_name')
+    type_id = request.json.get('type_id')
     genre_name = request.json.get('genre')
     existing_series_genre = SeriesGenre.query.filter_by(
-        genre=genre_name,
-        type_name=type_name
+        type_id=type_id,
+        genre=genre_name
     ).first()
     duplicate_data_in_database(existing_series_genre)
-    new_series_genre = SeriesGenre(genre=genre_name, type_name=type_name)
+    new_series_genre = SeriesGenre(type_id=type_id, genre=genre_name)
     db.session.add(new_series_genre)
     db.session.commit()
     return custom_messages.successfully_stored_on_db(
-        genre_name + " " + type_name + " genre"
+        genre_name + " genre"
     ), 201
 
 
 @app.route(series_path + series_genre_path, methods=['GET'])
 def get_all_genres():
 
-    all_genre_names = SeriesGenre.query.all()
+    all_genres = SeriesGenre.query.all()
     return jsonify(
-        [genre_name.json_dump() for genre_name in all_genre_names]
+        [genre.json_dump() for genre in all_genres]
     )
 
 
 @app.route(series_path + series_genre_path + '/<string:type_name>', methods=['GET'])
-def get_genre_by_type_and_name(type_name):
+def get_genre_by_type_name(type_name):
 
     check_empty_values(type_name)
+    serie_type = get_type_by_name(type_name)
+    type_id = serie_type.json['id']
     all_genre_names_by_type = SeriesGenre.query.filter_by(
-        type_name=type_name
+        type_id=type_id
     ).all()
     exist_data_on_database(all_genre_names_by_type)
     return jsonify(
@@ -127,9 +133,11 @@ def get_series_genre_by_type_and_genre(type_name, genre_name):
 
     check_empty_values(type_name)
     check_empty_values(genre_name)
+    serie_type = get_type_by_name(type_name)
+    type_id = serie_type.json['id']
     series_genre = SeriesGenre.query.filter_by(
         genre=genre_name,
-        type_name=type_name
+        type_id=type_id
     ).first()
     exist_data_on_database(series_genre)
     return jsonify(
@@ -144,7 +152,7 @@ def delete_genre_by_name():
     [check_empty_values(request.json.get(field) for field in request.json)]
     deleted_series_name = SeriesGenre.query.filter_by(
         genre=request.json.get('genre'),
-        type_name=request.json.get('type_name')
+        type_id=request.json.get('type_id')
     ).order_by(
         SeriesGenre.id.desc()
     ).first()
@@ -152,5 +160,5 @@ def delete_genre_by_name():
     db.session.delete(deleted_series_name)
     db.session.commit()
     return custom_messages.successfully_deleted_from_db(
-        request.json.get('genre') + " " + request.json.get('type_name') + " genre"
+        request.json.get('genre') + " genre"
     )
