@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Reboose - Series</title>
+    <link rel="stylesheet" href="../css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/skeleton.css">
+  </head>
+  <body>
+    <div class="container" id="series">
+      <h2>Series</h2>
+      <a class="button" href="../index.html">Back</a>
+      <h4> Save New Serie</h4>
+      <div class="row">
+        <div class="two columns">
+          <label>Type</label>
+        </div>
+        <div class="two columns">
+          <select id="type">
+              <option value="type">Type</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="two columns">
+          <label>Genre</label>
+        </div>
+        <div class="two columns">
+          <select id="genre">
+              <option value="genre">Genre</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="two columns">
+          <label>Author</label>
+        </div>
+        <div class="four columns">
+          <select id="author">
+              <option value="author">Author</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="two columns">
+          <label> Serie Name</label>
+        </div>
+        <div class="five columns">
+          <input id="name" />
+        </div>
+      </div>
+    </div>
+    <button class="button-primary" style="display:block;margin:auto;" @click="getSeriesTypes">Save</button>
+    <div class="container">
+      <hr />
+      <h4> Search series</h4>
+      <table class="u-full-width">
+        <thead>
+            <tr>
+              <th>
+                <label>Name</label>
+                <br />
+                <input />
+              </th>
+              <th>
+                <label>Type</label>
+                <br />
+                <input />
+              </th>
+              <th>
+                <label>Genre</label>
+                <br />
+                <input />
+              </th>
+              <th>
+                <label>Author</label>
+                <br />
+                <input />
+              </th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

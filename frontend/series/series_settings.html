@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Reboose - Series Settings</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/skeleton.css">
+  </head>
+  <body>
+    <h1>Series Settings</h1>
+    <div class="container" id="series-settings">
+      <div class="types">
+        <h3>Series Types</h3>
+        <div class="container">
+          <div class="six columns">
+            <h6>Insert New Type</h6>
+            <input id="new-type">
+            <button class="button-primary" style="display:block;" @click="postSeriesTypes">Insert Type</button>
+          </div>
+          <div class="six columns">
+            <div class="container">
+              <div class="row" v-for="type in types">
+                <div class="twelve columns">
+                  <p><b>Type Name:</b> {{ type.type_name }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="genres">
+          <h3>Series Genres</h3>
+          <div class="container">
+            <div class="six columns">
+              <h6>Insert New Genre</h6>
+              <select id="selected-type">
+                <option v-for="type in types" :value="type.type_name">{{ type.type_name }}</option>
+              </select>
+              <input id="new-genre">
+              <button class="button-primary" style="display:block;" @click="postSeriesGenres">Insert Genre</button>
+            </div>
+            <div class="six columns">
+              <div class="container">
+                <div class="row" v-for="genre in genres">
+                  <div class="twelve columns">
+                    <p><b>Type:</b> {{ genre.type_name }} <b>Genre:</b> {{ genre.genre }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </body>
+  <!-- Custom VueJS Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/series-settings.js"></script>
+</html>
