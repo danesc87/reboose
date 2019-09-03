@@ -24,12 +24,11 @@ from sqlalchemy.exc import IntegrityError
 @app.route(series_path + series_type_path, methods=['POST'])
 def post_type():
     is_not_json_request(request)
+    [check_empty_values(request.json.get(field)) for field in SeriesType.fields()]
     try:
-        type_name = request.json.get('type_name')
-        check_empty_values(type_name)
-
-        new_type_name = SeriesType(type_name=type_name)
-        db.session.add(new_type_name)
+        type_name = request.json.get('type')
+        new_type = SeriesType(type=type_name)
+        db.session.add(new_type)
         db.session.commit()
     except exc.IntegrityError:
         abort(400)
@@ -41,8 +40,8 @@ def post_type():
 
 @app.route(series_path + series_type_path, methods=['GET'])
 def get_all_types():
-    all_type_names = SeriesType.query.all()
-    return jsonify([type_name.json_dump() for type_name in all_type_names])
+    all_types = SeriesType.query.all()
+    return jsonify([each_type.json_dump() for each_type in all_types])
 
 
 @app.route(series_path + series_type_path + '/<string:type_name>', methods=['GET'])
@@ -50,7 +49,7 @@ def get_type_by_name(type_name):
 
     check_empty_values(type_name)
     series_type_name = SeriesType.query.filter_by(
-        type_name=type_name
+        type=type_name
     ).first()
     exist_data_on_database(series_type_name)
     return jsonify(
@@ -62,10 +61,10 @@ def get_type_by_name(type_name):
 def delete_type_by_name():
 
     is_not_json_request(request)
-    type_name = request.json.get('type_name')
-    check_empty_values(type_name)
+    [check_empty_values(request.json.get(field)) for field in SeriesType.fields()]
+    type_to_delete = request.json.get('type')
     deleted_series_type = SeriesType.query.filter_by(
-        type_name=type_name
+        type=type_to_delete
     ).order_by(
         SeriesType.id.desc()
     ).first()
@@ -76,7 +75,7 @@ def delete_type_by_name():
     except IntegrityError:
         abort(400)
     return custom_messages.successfully_deleted_from_db(
-        type_name + " type"
+        type_to_delete + " type"
     )
 
 #################
@@ -88,7 +87,7 @@ def delete_type_by_name():
 def post_new_genre():
 
     is_not_json_request(request)
-    [check_empty_values(request.json.get(field) for field in request.json)]
+    [check_empty_values(request.json.get(field)) for field in SeriesGenre.fields()]
     type_id = request.json.get('type_id')
     genre_name = request.json.get('genre')
     existing_series_genre = SeriesGenre.query.filter_by(
@@ -117,8 +116,8 @@ def get_all_genres():
 def get_genre_by_type_name(type_name):
 
     check_empty_values(type_name)
-    serie_type = get_type_by_name(type_name)
-    type_id = serie_type.json['id']
+    series_type = get_type_by_name(type_name)
+    type_id = series_type.json['id']
     all_genre_names_by_type = SeriesGenre.query.filter_by(
         type_id=type_id
     ).all()
@@ -133,8 +132,8 @@ def get_series_genre_by_type_and_genre(type_name, genre_name):
 
     check_empty_values(type_name)
     check_empty_values(genre_name)
-    serie_type = get_type_by_name(type_name)
-    type_id = serie_type.json['id']
+    series_type = get_type_by_name(type_name)
+    type_id = series_type.json['id']
     series_genre = SeriesGenre.query.filter_by(
         genre=genre_name,
         type_id=type_id
@@ -149,7 +148,7 @@ def get_series_genre_by_type_and_genre(type_name, genre_name):
 def delete_genre_by_name():
 
     is_not_json_request(request)
-    [check_empty_values(request.json.get(field) for field in request.json)]
+    [check_empty_values(request.json.get(field)) for field in SeriesGenre.fields()]
     deleted_series_name = SeriesGenre.query.filter_by(
         genre=request.json.get('genre'),
         type_id=request.json.get('type_id')
@@ -158,7 +157,10 @@ def delete_genre_by_name():
     ).first()
     exist_data_on_database(deleted_series_name)
     db.session.delete(deleted_series_name)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        abort(400)
     return custom_messages.successfully_deleted_from_db(
         request.json.get('genre') + " genre"
     )

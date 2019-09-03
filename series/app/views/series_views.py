@@ -19,30 +19,29 @@ def post_series():
 
     is_not_json_request(request)
     request_body = request.json
-    series_name = request_body.get('series_name')
-    series_type = request_body.get('series_type')
-    series_genre = request_body.get('series_genre')
-
-    [check_empty_values(request_body.get(field)) for field in request_body]
+    [check_empty_values(request_body.get(field)) for field in Series.fields()]
+    name = request_body.get('name')
+    type_id = request_body.get('type_id')
+    genre_id = request_body.get('genre_id')
 
     existing_series = Series.query.filter_by(
-        series_name=series_name,
-        series_type=series_type,
-        series_genre=series_genre
+        name=name,
+        type_id=type_id,
+        genre_id=genre_id
     ).first()
 
     duplicate_data_in_database(existing_series)
 
     new_series = Series(
-        series_name=series_name,
-        series_type=series_type,
-        series_genre=series_genre
+        name=name,
+        type_id=type_id,
+        genre_id=genre_id
     )
 
     db.session.add(new_series)
     db.session.commit()
     return custom_messages.successfully_stored_on_db(
-        series_name + ' Serie'
+        name + ' Serie'
     ), 201
 
 
@@ -55,11 +54,11 @@ def get_all_series():
     )
 
 
-@app.route(series_path + '/<string:series_name>', methods=['GET'])
-def get_series_by_name(series_name):
+@app.route(series_path + '/<string:searched_name>', methods=['GET'])
+def get_series_by_name(searched_name):
 
-    check_empty_values(series_name)
-    series = Series.query.filter(Series.series_name.contains(series_name)).order_by(Series.id.desc())
+    check_empty_values(searched_name)
+    series = Series.query.filter(Series.name.contains(searched_name)).order_by(Series.id.desc())
     return jsonify(
         list_must_have_items([each_series.json_dump() for each_series in series])
     )
@@ -69,12 +68,12 @@ def get_series_by_name(series_name):
 def delete_series():
 
     is_not_json_request(request)
-    [check_empty_values(request.json.get(field) for field in request.json)]
+    [check_empty_values(request.json.get(field)) for field in Series.fields()]
     request_body = request.json
     deleted_series = Series.query.filter_by(
-        series_name=request_body.get('series_name'),
-        series_type=request_body.get('series_type'),
-        series_genre=request_body.get('series_genre')
+        name=request_body.get('name'),
+        type_id=request_body.get('type_id'),
+        genre_id=request_body.get('genre_id')
     ).order_by(
         Series.id.desc()
     ).first()
@@ -82,5 +81,5 @@ def delete_series():
     db.session.delete(deleted_series)
     db.session.commit()
     return custom_messages.successfully_deleted_from_db(
-        "Series " + request_body.get('series_name')
+        "Series " + request_body.get('name')
     )
