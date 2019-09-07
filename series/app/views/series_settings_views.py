@@ -4,8 +4,7 @@
  Author: Daniel Córdova A.
 """
 
-from flask import abort, request
-from flask import jsonify
+from flask import abort, request, jsonify
 from sqlalchemy import exc
 
 from app import app, db
@@ -16,10 +15,10 @@ from app.utilities import is_not_json_request, check_empty_values
 from . import series_path, series_type_path, series_genre_path
 from sqlalchemy.exc import IntegrityError
 
-
 ################
 # Series Types #
 ###############
+
 
 @app.route(series_path + series_type_path, methods=['POST'])
 def post_type():
@@ -105,7 +104,6 @@ def post_new_genre():
 
 @app.route(series_path + series_genre_path, methods=['GET'])
 def get_all_genres():
-
     all_genres = SeriesGenre.query.all()
     return jsonify(
         [genre.json_dump() for genre in all_genres]

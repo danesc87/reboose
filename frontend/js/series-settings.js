@@ -36,7 +36,7 @@ var serieTypes = new Vue({
     postSeriesTypes: function(e){
       var newType = document.getElementById(seriesSettingsIds.newSerieTypeId);
       var inputJson = {
-        type_name: newType.value
+        type: newType.value
       }
       axios.post(seriesTypePath, inputJson)
     },
@@ -49,7 +49,7 @@ var serieTypes = new Vue({
       var newType = document.getElementById(seriesSettingsIds.selectedSerieTypeId);
       var newGenre = document.getElementById(seriesSettingsIds.newSerieGenreId);
       var inputJson = {
-        type_name: newType.value,
+        type_id: newType.value,
         genre: newGenre.value
       }
       axios.post(seriesGenrePath, inputJson)

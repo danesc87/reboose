@@ -16,7 +16,7 @@ class SeriesType(db.Model):
     def json_dump(self):
         return dict(
             id=self.id,
-            type_name=self.type
+            type=self.type
         )
 
     @staticmethod
@@ -37,7 +37,7 @@ class SeriesGenre(db.Model):
         return dict(
             id=self.id,
             genre=self.genre,
-            type_id=self.type_id
+            type=self.gender_type.type
         )
 
     @staticmethod
@@ -58,8 +58,8 @@ class Series(db.Model):
         return dict(
             id=self.id,
             name=self.name,
-            series_type=self.type_id,
-            genre_id=self.genre_id
+            type=self.series_type_name.type,
+            genre=self.series_genre.genre
         )
 
     @staticmethod
